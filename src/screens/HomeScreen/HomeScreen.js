@@ -1,15 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {FlatList, Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import styles from './HomeScreenStyles';
-import { firebase } from '../../firebase/config'
+import {firebase} from '../../firebase/config'
+import * as Notifications from "expo-notifications";
+import Constants from 'expo-constants'
 
-export default function HomeScreen(props) {
+export default function HomeScreen(props, {navigation}) {
 
     const [entityText, setEntityText] = useState('')
     const [entities, setEntities] = useState([])
 
     const entityRef = firebase.firestore().collection('entities')
     const userID = props.extraData.id
+
+    useEffect(() => {
+
+        (() => {
+            registerForPushNotificationsAsync()
+            console.log('register for push notifications')
+        })()
+    }, [])
 
     useEffect(() => {
         entityRef
@@ -51,6 +61,68 @@ export default function HomeScreen(props) {
         }
     }
 
+    const registerForPushNotificationsAsync = async () => {
+        console.log('function: register for push notifications')
+        let token;
+        if (Constants.isDevice) {
+            const {status: existingStatus} = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const {status} = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            console.log('save token')
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+            console.log(token);
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
+        if (token) {
+            console.log('make call to firestore')
+            const res = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({token}, {merge: true});
+        }
+
+        if (Platform.OS === 'android') {
+            await Notifications.setNotificationChannelAsync('default', {
+                name: 'default',
+                importance: Notifications.AndroidImportance.MAX,
+                vibrationPattern: [0, 250, 250, 250],
+                lightColor: '#FF231F7C',
+            });
+        }
+
+        return token;
+    }
+
+    const sendNotification = async (token) => {
+        const message = {
+            to: token,
+            sound: 'default',
+            title: 'Hello my friend!',
+            body: 'This is to show you my appreciation',
+            data: {someData: 'goes here'},
+        };
+
+        await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
+    }
+
+    const sendNotificationToAll = async () => {
+        const users = await firebase.firestore().collection('users').get()
+        users.docs.map(user => sendNotification(user.data().token))
+    }
+
     const renderEntity = ({item, index}) => {
         console.log(item)
         return (
@@ -64,6 +136,16 @@ export default function HomeScreen(props) {
 
     return (
         <View style={styles.container}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => sendNotification(token)}>
+                <Text style={styles.buttonText}>Notify</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => navigation.navigate('MementoScreen')}>
+                <Text style={styles.buttonText}>Notify All</Text>
+            </TouchableOpacity>
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}
@@ -78,7 +160,7 @@ export default function HomeScreen(props) {
                     <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
             </View>
-            { entities && (
+            {entities && (
                 <View style={styles.listContainer}>
                     <FlatList
                         data={entities}

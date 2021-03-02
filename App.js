@@ -2,9 +2,9 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import {LoginScreen, HomeScreen, RegistrationScreen} from './src/screens'
+import {LoginScreen, HomeScreen, RegistrationScreen, MementoScreen} from './src/screens'
 import {decode, encode} from 'base-64'
-import { firebase } from './src/firebase/config'
+import {firebase} from './src/firebase/config'
 
 if (!global.btoa) {
     global.btoa = encode
@@ -52,9 +52,12 @@ export default function App() {
         <NavigationContainer>
             <Stack.Navigator>
                 {user ? (
-                    <Stack.Screen name="HomeScreen">
-                        {props => <HomeScreen {...props} extraData={user}/>}
-                    </Stack.Screen>
+                    <>
+                        <Stack.Screen name="HomeScreen">
+                            {props => <HomeScreen {...props} extraData={user}/>}
+                        </Stack.Screen>
+                        <Stack.Screen name="MementoScreen" component={MementoScreen}/>
+                    </>
                 ) : (
                     <>
                         <Stack.Screen name="LoginScreen" component={LoginScreen}/>
@@ -62,6 +65,7 @@ export default function App() {
                         <Stack.Screen name="HomeScreen">
                             {props => <HomeScreen {...props} extraData={user}/>}
                         </Stack.Screen>
+                        <Stack.Screen name="MementoScreen" component={MementoScreen}/>
                     </>
                 )}
             </Stack.Navigator>
