@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react'
 import {FlatList, Keyboard, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import styles from './HomeScreenStyles';
-import {firebase} from '../../firebase/config'
+import {firebase} from '../../Firebase/config'
 import * as Notifications from "expo-notifications";
 import Constants from 'expo-constants'
+import { useNavigation } from '@react-navigation/native'
 
-export default function HomeScreen(props, {navigation}) {
+export default function HomeScreen(props) {
 
     const [entityText, setEntityText] = useState('')
     const [entities, setEntities] = useState([])
+    const navigation = useNavigation()
 
     const entityRef = firebase.firestore().collection('entities')
-    const userID = props.extraData.id
+    const userID = props.route.params.id
 
     useEffect(() => {
-
         (() => {
             registerForPushNotificationsAsync()
-            console.log('register for push notifications')
         })()
     }, [])
 
@@ -36,7 +36,7 @@ export default function HomeScreen(props, {navigation}) {
                     setEntities(newEntities)
                 },
                 error => {
-                    console.log(error)
+                    console.log('ERROR',error)
                 }
             )
     }, [])
@@ -62,7 +62,6 @@ export default function HomeScreen(props, {navigation}) {
     }
 
     const registerForPushNotificationsAsync = async () => {
-        console.log('function: register for push notifications')
         let token;
         if (Constants.isDevice) {
             const {status: existingStatus} = await Notifications.getPermissionsAsync();
@@ -75,14 +74,11 @@ export default function HomeScreen(props, {navigation}) {
                 alert('Failed to get push token for push notification!');
                 return;
             }
-            console.log('save token')
             token = (await Notifications.getExpoPushTokenAsync()).data;
-            console.log(token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
         if (token) {
-            console.log('make call to firestore')
             const res = await firebase.firestore().collection('users').doc(firebase.auth().currentUser.uid).set({token}, {merge: true});
         }
 
@@ -124,7 +120,6 @@ export default function HomeScreen(props, {navigation}) {
     }
 
     const renderEntity = ({item, index}) => {
-        console.log(item)
         return (
             <View style={styles.entityContainer}>
                 <Text style={styles.entityText}>
@@ -138,13 +133,13 @@ export default function HomeScreen(props, {navigation}) {
         <View style={styles.container}>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => sendNotification(token)}>
-                <Text style={styles.buttonText}>Notify</Text>
+                onPress={() => sendNotificationToAll()}>
+                <Text style={styles.buttonText}>Notify All</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => navigation.navigate('MementoScreen')}>
-                <Text style={styles.buttonText}>Notify All</Text>
+                onPress={() => navigation.navigate('Counter')}>
+                <Text style={styles.buttonText}>Counter</Text>
             </TouchableOpacity>
             <View style={styles.formContainer}>
                 <TextInput
