@@ -4,7 +4,7 @@ import styles from './HomeScreenStyles';
 import {firebase} from '../../Firebase/config'
 import * as Notifications from "expo-notifications";
 import Constants from 'expo-constants'
-import { useNavigation } from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native'
 
 export default function HomeScreen(props) {
 
@@ -22,23 +22,24 @@ export default function HomeScreen(props) {
     }, [])
 
     useEffect(() => {
-        entityRef
-            .where("authorID", "==", userID)
-            .orderBy('createdAt', 'desc')
-            .onSnapshot(
-                querySnapshot => {
-                    const newEntities = []
-                    querySnapshot.forEach(doc => {
-                        const entity = doc.data()
-                        entity.id = doc.id
-                        newEntities.push(entity)
-                    });
-                    setEntities(newEntities)
-                },
-                error => {
-                    console.log('ERROR',error)
-                }
-            )
+        if (userID) {
+            entityRef
+                .where("authorID", "==", userID)
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(
+                    querySnapshot => {
+                        const newEntities = []
+                        querySnapshot.forEach(doc => {
+                            const entity = doc.data()
+                            entity.id = doc.id
+                            newEntities.push(entity)
+                        });
+                        setEntities(newEntities)
+                    },
+                    error => {
+                    }
+                )
+        }
     }, [])
 
     const onAddButtonPress = () => {

@@ -12,7 +12,7 @@ function* logInSaga(action) {
         const response = yield call(AuthService.logIn, email, password)
         yield put(AuthActions.logInSuccess(response))
     } catch (error) {
-        console.log('ERROR',error);
+        console.log('ERROR 1 ',error);
     }
 }
 
@@ -21,7 +21,7 @@ function* signInSaga() {
         console.log('SIGN IN SAGA')
         // yield put(CounterActions.decreaseCounter());
     } catch (error) {
-        console.log('ERROR',error);
+        console.log('ERROR 2 ',error);
     }
 }
 
@@ -30,7 +30,7 @@ function* signOutSaga() {
         console.log('SIGN OUT SAGA')
         // yield put(CounterActions.decreaseCounter());
     } catch (error) {
-        console.log('ERROR',error);
+        console.log('ERROR 3 ',error);
     }
 }
 
@@ -39,7 +39,7 @@ function* setUserSaga() {
         console.log('SET USER SAGA')
         yield put(AuthActions.setUser());
     } catch (error) {
-        console.log('ERROR',error);
+        console.log('ERROR 4 ',error);
     }
 }
 export function* watchAuthActions() {

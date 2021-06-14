@@ -6,8 +6,8 @@ import {all} from "@redux-saga/core/effects";
 function* increaseCounterSaga() {
     try {
         // yield delay(4000);
-        yield put(CounterActions.increaseCounter())
-        // console.log('INCREASE COUNTER SAGA')
+        // yield put(CounterActions.increaseCounter())
+        console.log('INCREASE COUNTER SAGA')
     } catch (error) {
         console.log('ERROR',error);
     }
@@ -16,8 +16,8 @@ function* increaseCounterSaga() {
 // Decrease Counter Async
 function* decreaseCounterSaga() {
     try {
-        // console.log('DECREASE COUNTER SAGA')
-        yield put(CounterActions.decreaseCounter());
+        console.log('DECREASE COUNTER SAGA')
+        // yield put(CounterActions.decreaseCounter());
     } catch (error) {
         console.log('ERROR',error);
     }
