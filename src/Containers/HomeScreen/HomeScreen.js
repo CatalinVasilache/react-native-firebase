@@ -132,16 +132,18 @@ export default function HomeScreen(props) {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => sendNotificationToAll()}>
-                <Text style={styles.buttonText}>Notify All</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => navigation.navigate('Counter')}>
-                <Text style={styles.buttonText}>Counter</Text>
-            </TouchableOpacity>
+            <View style={styles.containerButtons}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => sendNotificationToAll()}>
+                    <Text style={styles.buttonText}>Notify All</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('Counter')}>
+                    <Text style={styles.buttonText}>Counter</Text>
+                </TouchableOpacity>
+            </View>
             <View style={styles.formContainer}>
                 <TextInput
                     style={styles.input}

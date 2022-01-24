@@ -7,7 +7,7 @@ const {Types: ScoreGuessTypes, Creators: ScoreGuessActions} = createActions({
     decreaseHomeGoals: [''],
     increaseAwayGoals: [''],
     decreaseAwayGoals: [''],
-    submitScoreGoals: ['']
+    submitScoreGuess: ['']
 })
 //Initial state
 export {ScoreGuessTypes, ScoreGuessActions}

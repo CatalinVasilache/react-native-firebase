@@ -36,7 +36,7 @@ export default function CreateRootNavigator(props) {
                 <Drawer.Navigator screenOptions={{
                     headerTintColor: '#fff',
                     headerTitleStyle: {
-                        fontWeight: 'bold',
+                        fontWeight: 'normal',
                     }
                 }} initialRouteName="Home">
                     {Object.entries(commonScreens).map(([name, component], index) => (

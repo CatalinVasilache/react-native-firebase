@@ -22,7 +22,7 @@ export default function Counter({navigation}) {
                     <Text style={styles.buttonText}>-</Text>
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity title="Go back" onPress={() => navigation.goBack()} />
+            <TouchableOpacity style={styles.backButton} title="Go back" onPress={() => navigation.goBack()} />
         </SafeAreaView>
     )
 }
@@ -60,4 +60,14 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginRight: 40,
     },
+    backButton: {
+        backgroundColor: '#788eec',
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 20,
+        height: 48,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    }
 });
