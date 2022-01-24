@@ -52,5 +52,12 @@ export default StyleSheet.create({
     entityText: {
         fontSize: 20,
         color: '#333333'
+    },
+    containerButtons: {
+        flexDirection: 'row',
+        display:'flex',
+        justifyContent: 'space-between',
+        width: 250,
+        marginTop: 50
     }
 })
