@@ -17,7 +17,7 @@ class AuthService {
                             return;
                         }
                         return Promise.resolve(firestoreDocument.data())
-                        // this.props.navigation.navigate('HomeScreen', {user})
+                        // this.props.navigation.navigate('AdminDashboard', {user})
                     })
                     .catch(error => {
                         alert(error)
