@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
 import {
     LoginScreen,
-    HomeScreen,
+    AdminDashboard,
     RegistrationScreen,
     MementoScreen,
     Counter,
@@ -22,11 +22,11 @@ const authScreens = {
     RegistrationScreen: RegistrationScreen,
 }
 const commonScreens = {
-    HomeScreen: HomeScreen,
-    Counter: Counter,
-    MementoScreen: MementoScreen,
-    ScoreGuess: ScoreGuess,
-    LogoutScreen: LogoutScreen
+    'Admin Dashboard': AdminDashboard,
+    'Counter': Counter,
+    'Memento': MementoScreen,
+    'Score Guess': ScoreGuess,
+    'Logout': LogoutScreen
 }
 
 export default function CreateRootNavigator(props) {
@@ -34,7 +34,7 @@ export default function CreateRootNavigator(props) {
         <NavigationContainer>
             {props.isLoggedIn ? (
                 <Drawer.Navigator screenOptions={{
-                    headerTintColor: '#fff',
+                    headerTintColor: '#130d0d',
                     headerTitleStyle: {
                         fontWeight: 'normal',
                     }
