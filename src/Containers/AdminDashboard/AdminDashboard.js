@@ -34,25 +34,6 @@ export default function AdminDashboard(props) {
     //     }
     // }, [])
 
-    // const onAddButtonPress = () => {
-    //     if (entityText && entityText.length > 0) {
-    //         const timestamp = firebase.firestore.FieldValue.serverTimestamp();
-    //         const data = {
-    //             text: entityText,
-    //             authorID: userID,
-    //             createdAt: timestamp,
-    //         };
-    //         entityRef
-    //             .add(data)
-    //             .then(_doc => {
-    //                 setEntityText('')
-    //                 Keyboard.dismiss()
-    //             })
-    //             .catch((error) => {
-    //                 alert(error)
-    //             });
-    //     }
-    // }
 
     const sendNotification = async (token) => {
         const message = {
@@ -92,6 +73,11 @@ export default function AdminDashboard(props) {
     return (
         <View style={styles.container}>
             <View style={styles.containerButtons}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate('CreateNews')}>
+                    <Text style={styles.buttonText}>Create new post</Text>
+                </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => sendNotificationToAll()}>
